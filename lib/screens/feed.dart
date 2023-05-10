@@ -1,11 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Feed extends StatelessWidget {
+  const Feed({Key? key}) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
+
+    var mediaQuery = MediaQuery.of(context);
+    Size size = mediaQuery.size;
+
     return Scaffold(
       body: Container(
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         // color: Colors.black,
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -18,25 +26,25 @@ class Feed extends StatelessWidget {
             children: <Widget>[
               Container(
                 height: 60.0,
-                margin: const EdgeInsets.only(left: 20.0, top: 10.0, bottom:10.0),  
-                child: Row(children: <Widget>[
-                  Container(
-                    child: Image.asset('assets/icons/icon_woman.png',
-                    height: 40.0,
-                    width: 40.0,) 
-                  ),
-                  const Spacer(flex: 2),
-                  Container(
-                    margin: const EdgeInsets.only(right: 20.0, top: 10.0, bottom:10.0),
-                    child: Image.asset('assets/icons/white_settings.png',
-                    height: 40.0,
-                    width: 40.0)
-                  ),
-                ]
-              ),           
+              //   margin: const EdgeInsets.only(left: 20.0, top: 10.0, bottom:10.0),  
+              //   child: Row(children: <Widget>[
+              //     Container(
+              //       child: Image.asset('assets/icons/icon_woman.png',
+              //       height: 40.0,
+              //       width: 40.0,) 
+              //     ),
+              //     const Spacer(flex: 2),
+              //     Container(
+              //       margin: const EdgeInsets.only(right: 20.0, top: 10.0, bottom:10.0),
+              //       child: Image.asset('assets/icons/white_settings.png',
+              //       height: 40.0,
+              //       width: 40.0)
+              //     ),
+              //   ]
+              // ),           
               ),
               Container(
-                width: 500.0,
+                width: size.width * 0.8,
                 height: 60.0,
                 margin: const EdgeInsets.only(bottom: 15.0),
                 padding: const EdgeInsets.all(10.0),
@@ -53,8 +61,8 @@ class Feed extends StatelessWidget {
                     ),
               ),
               Container(
-                width: 500.0,
-                height: 425.0,
+                width: size.width * 0.8,
+                height: 400.0,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(18.0),
@@ -64,16 +72,14 @@ class Feed extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(top: 25.0, left:25.0),
-                          width: 50.0,
-                          height: 50.0,
+                          margin: EdgeInsets.only(top: size.width * 0.05, left:size.width * 0.05),
                           child: Image.asset('assets/icons/user.png',
-                          width: 50.0,
-                          height: 50.0,),
+                          width: size.width * 0.1, 
+                          height: size.width * 0.1,)
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 37.0),
-                          width: 300.0,
+                          margin: EdgeInsets.only(top: size.width * 0.05),
+                          width: size.width * 0.4,
                           height: 50.0,
                           child: const Text('user',
                             textAlign: TextAlign.center,
@@ -97,11 +103,12 @@ class Feed extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      alignment: Alignment.bottomLeft,
+                      alignment: Alignment.topLeft,
                       margin: const EdgeInsets.only(left: 25.0),
-                      child: Image.asset('assets/icons/like.png',
-                      height: 35.0,
-                      width: 35.0,),
+                      child: const Icon(CupertinoIcons.heart),
+                      // child: Image.asset('assets/icons/like.png',
+                      // height: 35.0,
+                      // width: 35.0,),
                     ),
                   ],
                 ),
@@ -109,7 +116,7 @@ class Feed extends StatelessWidget {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

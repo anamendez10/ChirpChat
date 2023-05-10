@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chirp_chat/screens/Register.dart';
-import 'package:chirp_chat/screens/Feed.dart';
+import 'package:chirp_chat/screens/navbar.dart';
 
 
 class Login extends StatelessWidget {
@@ -28,7 +28,7 @@ class Login extends StatelessWidget {
               ),
               Container(
                 width: 350.0,
-                height: 210.0,
+                height: 230.0,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -81,7 +81,7 @@ class Login extends StatelessWidget {
                         style: TextStyle(color: Colors.black, fontSize: 20.0),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Feed()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
                       },
                     ),
                     const Spacer(

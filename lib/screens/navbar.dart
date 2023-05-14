@@ -1,5 +1,5 @@
 import 'package:chirp_chat/screens/add_friends.dart';
-import 'package:chirp_chat/screens/chart_room.dart';
+import 'package:chirp_chat/screens/chat_room.dart';
 import 'package:chirp_chat/screens/feed.dart';
 import 'package:chirp_chat/screens/profile.dart';
 import 'package:chirp_chat/screens/settings.dart';
@@ -15,7 +15,7 @@ class NavBar extends StatefulWidget {
 }
 
 class _MainPageState extends State<NavBar> {
-  Color mainColor = Color.fromARGB(255, 215, 30, 30);
+  Color mainColor = const Color.fromARGB(255, 255, 255, 255);
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
 
@@ -23,6 +23,7 @@ class _MainPageState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PersistentTabView(
+        backgroundColor: Colors.black,
         context,
         controller: _controller,
         screens: const [
@@ -33,14 +34,7 @@ class _MainPageState extends State<NavBar> {
           Settings()
         ],
         items: _navBarsItems(),
-        // navBarStyle: NavBarStyle.style1,
         navBarStyle: NavBarStyle.style9,
-        // navBarStyle: NavBarStyle.style7,
-        // navBarStyle: NavBarStyle.style10,
-        // navBarStyle: NavBarStyle.style12,
-        // navBarStyle: NavBarStyle.style13,
-        // navBarStyle: NavBarStyle.style3, 
-        // navBarStyle: NavBarStyle.style6,
         
       ),
     );

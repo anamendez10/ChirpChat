@@ -7,7 +7,7 @@ class IndividualChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         // color: Colors.black,
         decoration: const BoxDecoration(
           image: DecorationImage(

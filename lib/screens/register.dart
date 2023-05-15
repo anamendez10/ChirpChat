@@ -2,6 +2,8 @@ import 'package:chirp_chat/services/usuario.service.dart';
 import 'package:flutter/material.dart';
 import 'package:chirp_chat/screens/login.dart';
 
+import '../models/models.dart';
+
 class Register extends StatelessWidget {
 
   TextEditingController nameController = TextEditingController();
@@ -139,12 +141,17 @@ class Register extends StatelessWidget {
                                   color: Colors.black, fontSize: 20.0),
                             ),
                             onPressed: () async{
-                              var respuesta = await usuarioService().newUser(nameController.text, 
-                                                                            surnameController.text, 
-                                                                            usernameController.text, 
-                                                                            emailController.text, 
-                                                                            passwordController.text);
-                            },
+                              final user = Usuario(
+                                  nombre: nameController.text,
+                                  apellido: surnameController.text,
+                                  user_name: usernameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text
+                                //imagen: "", aquí se cargara la imagen en formato base64
+                              );
+                              final service = usuarioService();
+                              final response = service.post(user);
+                              },
                           ),
                           const Spacer(
                             flex: 2,

@@ -1,4 +1,4 @@
-class Usuario{
+class Usuario {
   dynamic id;
   dynamic imagen;
   dynamic nombre;
@@ -33,5 +33,19 @@ class Usuario{
       is_active: map['is_active'],
       create_at: map['create_at'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'imagen': imagen,
+      'nombre': nombre,
+      'apellido': apellido,
+      'user_name': user_name,
+      'email': email,
+      'password': password,
+      'is_active': is_active,
+      'create_at': create_at,
+    };
   }
 }

@@ -32,7 +32,7 @@ class Register extends StatelessWidget {
               ),
               Container(
                   width: 350.0,
-                  height: 460.0,
+                  // height: 460.0,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),

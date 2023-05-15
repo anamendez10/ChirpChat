@@ -7,11 +7,12 @@ class Feed extends StatefulWidget {
 
   @override
   State<Feed> createState() => _FeedState();
-
 }
 
 class _FeedState extends State<Feed> {
   bool addPost = false;
+  bool liked = true;
+
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -66,7 +67,7 @@ class _FeedState extends State<Feed> {
                                 top: size.width * 0.03,
                                 left: size.width * 0.05),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(60.0),  
+                              borderRadius: BorderRadius.circular(60.0),
                               child: Image.asset(
                                 'assets/images/miguel.jpg',
                                 width: size.width * 0.1,
@@ -101,10 +102,28 @@ class _FeedState extends State<Feed> {
                         width: 250.0,
                         height: 250.0,
                       ),
-                      Container(
-                        alignment: Alignment.topLeft,
+                      
+                      GestureDetector(
+                        onTap: () {
+                          setState(
+                            () {
+                              liked = !liked;
+                            },
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.topLeft,
                         margin: const EdgeInsets.only(left: 25.0, bottom: 18.0),
-                        child: const Icon(CupertinoIcons.heart),
+                          child: Row(
+                            children: <Widget>[
+                              (liked ? const Icon(CupertinoIcons.heart) : const Icon(CupertinoIcons.heart_fill, color: Colors.red,)),
+                              (liked ? const Text('0') : const Text('0', style: TextStyle(color: Colors.red)))
+                            ],
+                          ),
+                        
+                        
+                        
+                      ),
                       ),
                     ],
                   ),
@@ -115,11 +134,15 @@ class _FeedState extends State<Feed> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: const Icon(Icons.add, color: Colors.black,),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NewPost()));
-      }),
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.add,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => NewPost()));
+          }),
     );
   }
 }

@@ -15,9 +15,8 @@ class Profile extends StatelessWidget {
         // color: Colors.black,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background2.png"), 
-              fit: BoxFit.cover
-            ),
+              image: AssetImage("assets/images/background2.png"),
+              fit: BoxFit.cover),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -51,13 +50,19 @@ class Profile extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    height: 50.0,
+                    // height: 50.0,
                     margin: const EdgeInsets.only(
                         left: 55.0, right: 15.0, bottom: 15.0),
-                    child: Image.asset(
-                      'assets/icons/icon_man.png',
-                      height: 50.0,
-                      width: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(60.0),
+                      child: Image.asset(
+                        'assets/images/miguel.jpg',
+                        height: 50.0,
+                        width: 50.0,
+                      ),
                     ),
                   ),
                   Container(
@@ -71,18 +76,24 @@ class Profile extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    height: 50.0,
+                    // height: 50.0,
                     margin: const EdgeInsets.only(
                         left: 55.0, right: 15.0, bottom: 15.0),
-                    child: Image.asset(
-                      'assets/icons/icon_man.png',
-                      height: 50.0,
-                      width: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(60.0),
+                      child: Image.asset(
+                        'assets/images/sebas.jpg',
+                        height: 50.0,
+                        width: 50.0,
+                      ),
                     ),
                   ),
                   Container(
                       margin: const EdgeInsets.only(bottom: 10.0),
-                      child: const Text('Sebastián Useche',
+                      child: const Text('Sebastian Useche',
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(color: Colors.white, fontSize: 20.0))),

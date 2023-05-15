@@ -23,21 +23,31 @@ class ChatRoom extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Container(
-                margin: const EdgeInsets.only(
-                    right: 25.0, left: 35.0, bottom: 15.0, top: 35.0),
-                child: Image.asset(
-                  'assets/images/miguel.jpg',
-                  height: 80.0,
-                  width: 80.0,
+                margin: const EdgeInsets.only(top: 15.0, left: 30.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60.0),
+                  child: Image.asset(
+                    'assets/images/miguel.jpg',
+                    width: 60.0,
+                    height: 60.0,
+                  ),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(
-                    right: 25.0, left: 10.0, bottom: 15.0, top: 35.0),
-                child: Image.asset(
-                  'assets/images/sebas.jpg',
-                  height: 80.0,
-                  width: 80.0,
+                margin: const EdgeInsets.only(top: 15.0, left: 30.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60.0),
+                  child: Image.asset(
+                    'assets/images/sebas.jpg',
+                    width: 60.0,
+                    height: 60.0,
+                  ),
                 ),
               ),
               Container(
@@ -102,18 +112,23 @@ class ChatRoom extends StatelessWidget {
           width: size.width * 1,
           height: 100.0,
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 0.5)
-          ),
+              color: Colors.white,
+              border: Border.all(color: Colors.black, width: 0.5)),
           child: Column(
             children: <Widget>[
               Row(children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(top: 15.0, left: 30.0),
-                  child: Image.asset(
-                    'assets/images/miguel.jpg',
-                    width: size.width * 0.1,
-                    height: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(60.0),
+                    child: Image.asset(
+                      'assets/images/miguel.jpg',
+                      width: 60.0,
+                      height: 60.0,
+                    ),
                   ),
                 ),
                 Column(children: <Widget>[
@@ -142,18 +157,23 @@ class ChatRoom extends StatelessWidget {
           width: size.width * 1,
           height: 100.0,
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 0.5)
-          ),
+              color: Colors.white,
+              border: Border.all(color: Colors.black, width: 0.5)),
           child: Column(
             children: <Widget>[
               Row(children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(top: 15.0, left: 30.0),
-                  child: Image.asset(
-                    'assets/images/sebas.jpg',
-                    width: size.width * 0.1,
-                    height: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(60.0),
+                    child: Image.asset(
+                      'assets/images/sebas.jpg',
+                      width: 60.0,
+                      height: 60.0,
+                    ),
                   ),
                 ),
                 Column(children: <Widget>[

@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 
 const String urlAPI = 'https://drf-api-chirp-chat.onrender.com/usuario/';
 var url = Uri.parse(urlAPI);
+
+
 class usuarioService {
   Future<List<Usuario>> getUser() async {
     final response = await http.get(url);

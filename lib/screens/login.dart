@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:chirp_chat/screens/Register.dart';
 import 'package:chirp_chat/screens/navbar.dart';
+import '../services/login.service.dart';
 
 
 class Login extends StatelessWidget {
   final emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void showTemporarySnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message), duration: Duration(seconds: 3));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +53,8 @@ class Login extends StatelessWidget {
                         labelText: 'Username',
                         isDense: true,
                         hintText: 'Type your username!',
-                        
-                        // Added this
                       ),
+                      controller: emailController,
                     ),
                   ),
                   Container(
@@ -60,6 +67,7 @@ class Login extends StatelessWidget {
                         isDense: true,
                         hintText: 'Type your paassword!', // Added this
                       ),
+                      controller: passwordController,
                     ),
                   ),
                   Container(
@@ -80,10 +88,21 @@ class Login extends StatelessWidget {
                         'Login',
                         style: TextStyle(color: Colors.black, fontSize: 20.0),
                       ),
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
-                      },
-                    ),
+                      onPressed: () async{
+                        if(emailController.text != "" && passwordController.text != ""){
+                          final service = LoginService();
+                          final response = service.post(emailController.text, passwordController.text);
+                          if(response == 202){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
+                          }
+                          else{
+                            showTemporarySnackBar(context, 'Error en el usuario o contraseña');
+                          }
+                        }else{
+                          showTemporarySnackBar(context, 'Llene los campos requeridos');
+                        }
+                  },
+                ),
                     const Spacer(
                       flex: 2,
                     ),

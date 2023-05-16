@@ -1,3 +1,5 @@
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:chirp_chat/screens/Register.dart';
 import 'package:chirp_chat/screens/navbar.dart';
@@ -88,11 +90,17 @@ class Login extends StatelessWidget {
                         'Login',
                         style: TextStyle(color: Colors.black, fontSize: 20.0),
                       ),
-                      onPressed: () async{
+                      onPressed: () async {
                         if(emailController.text != "" && passwordController.text != ""){
                           final service = LoginService();
-                          final response = service.post(emailController.text, passwordController.text);
+                          final response = await service.postLogin(emailController.text, passwordController.text);
                           if(response == 202){
+                            Future<void> guardarDatosUsuario(String id, String nombre, String email) async {
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              prefs.setString('id', id);
+                              prefs.setString('nombre', nombre);
+                              prefs.setString('email', email);
+                            }
                             Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
                           }
                           else{

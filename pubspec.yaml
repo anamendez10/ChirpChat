@@ -21,6 +21,7 @@ environment:
   sdk: '>=3.0.0-4.0.dev <4.0.0'
 
 dependencies:
+  shared_preferences: ^2.0.8
   http: ^0.13.6
   flutter:
     sdk: flutter

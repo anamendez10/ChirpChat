@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:chirp_chat/screens/Register.dart';
 import 'package:chirp_chat/screens/navbar.dart';
+import '../models/models.dart';
 import '../services/login.service.dart';
 
 
@@ -13,6 +14,16 @@ class Login extends StatelessWidget {
   void showTemporarySnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(content: Text(message), duration: Duration(seconds: 3));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> guardarDatosUsuario(Usuario user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('id', user.id);
+    prefs.setString('nombre', user.nombre);
+    prefs.setString('apellido', user.apellido);
+    prefs.setString('user_name', user.user_name);
+    prefs.setString('email', user.email);
+    prefs.setString('is_active', user.is_active);
   }
 
 
@@ -93,15 +104,11 @@ class Login extends StatelessWidget {
                       onPressed: () async {
                         if(emailController.text != "" && passwordController.text != ""){
                           final service = LoginService();
-                          final response = await service.postLogin(emailController.text, passwordController.text);
-                          if(response == 202){
-                            Future<void> guardarDatosUsuario(String id, String nombre, String email) async {
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              prefs.setString('id', id);
-                              prefs.setString('nombre', nombre);
-                              prefs.setString('email', email);
-                            }
+                          final Usuario response = await service.postLogin(emailController.text, passwordController.text);
+                          if(response != null){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
+                            guardarDatosUsuario(response);
+                            print(response);
                           }
                           else{
                             showTemporarySnackBar(context, 'Error en el usuario o contraseña');

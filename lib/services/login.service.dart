@@ -1,3 +1,4 @@
+import 'package:chirp_chat/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -7,12 +8,17 @@ var url = Uri.parse(urlAPI);
 
 class LoginService {
 // login
-  Future<dynamic> postLogin(String email, String password) async {
+  Future<Usuario> postLogin(String email, String password) async {
     var jsonBody = jsonEncode({"email":email,"password":password});//de Usuario a JSON
     var headers = {'Content-Type': 'application/json'};
     var response = await http.post(url, headers: headers, body: jsonBody);
     print('${response.statusCode}: ${response.body}');
-    return response.statusCode;
-
+    if(response.statusCode == 202){
+      dynamic responseBody = jsonDecode(response.body);
+      Usuario user = Usuario.fromMap(responseBody);
+      return user;
+    }else {
+      throw Exception("Fallo la conexión");
+    }
   }
 }

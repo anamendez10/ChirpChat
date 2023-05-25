@@ -16,7 +16,10 @@ class NewPost extends StatefulWidget {
 class _NewPostState extends State<NewPost> {
   final TextEditingController _contentController = TextEditingController();
   File? _selectedImage;
-
+  void showTemporarySnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message), duration: Duration(seconds: 3));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   Future<int> obtenerIdUsuarioCell() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,32 +52,33 @@ class _NewPostState extends State<NewPost> {
       );
       return;
     }
-
+    var headers = {'Content-Type': 'application/json'};
     if (_selectedImage == null) {
-      final imageBytes = await _selectedImage!.readAsBytes();
-      final base64Image = base64Encode(imageBytes);
-
+      int idd = await obtenerIdUsuarioCell();
       final apiUrl = 'https://drf-api-chirp-chat.onrender.com/publicacion/';
+      Map<String, dynamic> data = {'contenido': _contentController.text,"my_self": idd};
+      String jsonData = json.encode(data);
       final response = await http.post(
-        Uri.parse(apiUrl),
-        body: {
-          'contenido': _contentController.text,
-          "my_self": await obtenerIdUsuarioCell()
-        },
+        Uri.parse(apiUrl), headers: headers,
+        body: jsonData,
       );
+      print('aquiiiiii   ${response.body}  ${response.statusCode}');
     }else{
       final imageBytes = await _selectedImage!.readAsBytes();
       final base64Image = base64Encode(imageBytes);
 
       final apiUrl = 'https://drf-api-chirp-chat.onrender.com/publicacion/';
+      Map<String, dynamic> data = {'contenido': _contentController.text,'imagen': base64Image,"my_self": await obtenerIdUsuarioCell()};
+      String jsonData = json.encode(data);
       final response = await http.post(
-        Uri.parse(apiUrl),
-        body: {
-          'contenido': _contentController.text,
-          'imagen': base64Image,
-          "my_self": await obtenerIdUsuarioCell()
-        },
+        Uri.parse(apiUrl), headers: headers,
+        body: jsonData,
       );
+      if(response.statusCode == 201){
+        Navigator.pop(context);
+      }else{
+        showTemporarySnackBar(context, 'Error en el usuario o contraseña');
+      }
     }
   }
 

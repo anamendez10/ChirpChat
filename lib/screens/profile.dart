@@ -38,13 +38,22 @@ class Profile extends StatelessWidget {
       print(base64Image);
       return base64Image;
     }
-
     return "";
   }
+
   Future<List<Post>> obtenerListaPosts() async {
     int id = await obtenerIdUsuario();
     final service = postService();
     return await service.getPostsMios(id);
+  }
+/*  Future<List<Usuario>> obtenerListaAmigos() async {
+    int id = await obtenerIdUsuario();
+    final service = usuarioService();
+    return await service.getMisAmigos(id);
+  }*/
+  Future<List<Usuario>> obtenerListaAmigos() async {
+    final service = usuarioService();
+    return await service.getUser();
   }
 
   @override
@@ -76,7 +85,7 @@ class Profile extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage("https://img.freepik.com/foto-gratis/tarjeta-plantilla-informe-papel-suave_1258-167.jpg"),
+                          image: NetworkImage(usuario.imagen ?? 'https://chirpchatbucketimages.s3.us-east-2.amazonaws.com/media/f0372380-8287-4a2c-b632-4f390bbe6c34.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -96,7 +105,7 @@ class Profile extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "Nombre: " + usuario.nombre ?? "" + usuario.apellido ?? "",
+                                  "Nombre: " + (usuario.nombre ?? "") + (usuario.apellido ?? ""),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -113,13 +122,11 @@ class Profile extends StatelessWidget {
                                     fontSize: 15.0,
                                   ),
                                 ),
-                                // Agrega más widgets Text aquí si necesitas mostrar más textos
                               ],
                             ),
                           ),
                           const Spacer(flex: 2),
                           Container(
-                            // height: 50.0,
                             margin: const EdgeInsets.only(
                               top: 55.0,
                               right: 50.0,
@@ -137,8 +144,7 @@ class Profile extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(60.0),
                                 child: Image.network(
-                                  usuario.imagen ??
-                                      'https://chirpchatbucketimages.s3.us-east-2.amazonaws.com/media/f0372380-8287-4a2c-b632-4f390bbe6c34.png',
+                                  usuario.imagen ?? 'https://chirpchatbucketimages.s3.us-east-2.amazonaws.com/media/f0372380-8287-4a2c-b632-4f390bbe6c34.png',
                                   height: 70.0,
                                   width: 70.0,
                                 ),
@@ -156,39 +162,55 @@ class Profile extends StatelessWidget {
                         fontSize: 35.0,
                       ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          // height: 50.0,
-                          margin: const EdgeInsets.only(
-                            left: 55.0,
-                            right: 15.0,
-                            bottom: 15.0,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(60.0),
-                            child: Image.asset(
-                              'assets/images/miguel.jpg',
-                              height: 50.0,
-                              width: 50.0,
+                    FutureBuilder<List<Usuario>>(
+                      future: obtenerListaAmigos(), // Obtener la lista de usuarios de la API
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          List<Usuario> usuarios = snapshot.data!;
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: usuarios.map((usuario) {
+                                return Container(
+                                  margin: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 15.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(60.0),
+                                          child: Image.network(
+                                            usuario.imagen ?? 'https://chirpchatbucketimages.s3.us-east-2.amazonaws.com/media/f0372380-8287-4a2c-b632-4f390bbe6c34.png',
+                                            height: 50.0,
+                                            width: 50.0,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(bottom: 10.0),
+                                        child: Text(
+                                          usuario.user_name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 10.0),
-                          child: const Text(
-                            'Miguel Moreno',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ),
-                      ],
+                          );
+                        }
+                      },
                     ),
                     const Text(
                       'Publicaciones',
@@ -210,7 +232,7 @@ class Profile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(18.0),
                       ),
                       child: FutureBuilder<List<Post>>(
-                        future: obtenerListaPosts(), // Aquí debes obtener la lista de posts
+                        future: obtenerListaPosts(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
@@ -277,6 +299,10 @@ class Profile extends StatelessWidget {
                                       alignment: Alignment.topLeft,
                                       margin: const EdgeInsets.only(left: 25.0),
                                       child: const Icon(CupertinoIcons.heart),
+                                    ),
+                                    Container(
+                                      height: 20.0,
+                                      color: Colors.black,
                                     ),
                                   ],
                                 );

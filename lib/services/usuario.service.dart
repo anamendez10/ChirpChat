@@ -34,6 +34,21 @@ class usuarioService {
       throw Exception("Fallo la conexión");
     }
   }
+  Future<List<Usuario>> getMisAmigos(int id) async {
+    String idUrl = "https://drf-api-chirp-chat.onrender.com/lista-amigos" + id.toString() + "/";
+    final response = await http.get(Uri.parse(idUrl));
+    if (response.statusCode == 200) {
+      List<Usuario> user = [];
+      String body = utf8.decode(response.bodyBytes);
+      final json_data = json.decode(body);
+      for (var item in json_data) {
+        user.add(Usuario.fromMap(item));
+      }
+      return user;
+    } else {
+      throw Exception("Fallo la conexión");
+    }
+  }
 
   // new user
   Future<dynamic> post(Usuario user) async{

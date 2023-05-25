@@ -12,7 +12,8 @@ class AddFriends extends StatefulWidget {
 }
 
 class _AddFriendsState extends State<AddFriends> {
-  bool isIconSelected = false;
+  String selectedUser = "";
+  bool selected = false;
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -58,7 +59,6 @@ class _AddFriendsState extends State<AddFriends> {
                 elevation: 0,
               ),
               body: Container(
-
                 decoration: BoxDecoration(
                   color: Colors.black,
                 ),
@@ -76,8 +76,8 @@ class _AddFriendsState extends State<AddFriends> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(60.0),
-                            child: Image.asset(
-                              usuario.imagen ?? 'assets/images/miguel.jpg',
+                            child: Image.network(
+                              usuario.imagen ?? 'https://chirpchatbucketimages.s3.us-east-2.amazonaws.com/media/f0372380-8287-4a2c-b632-4f390bbe6c34.png',
                               width: 60.0,
                               height: 60.0,
                             ),
@@ -92,16 +92,37 @@ class _AddFriendsState extends State<AddFriends> {
                                     bottom: 5.0, top: 15.0),
                                 child: Row(
                                   children: <Widget>[
-                                    Text(
-                                      usuario.nombre ?? "Hubo un error",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                        color: Colors.white,
+                                    Container(
+                                      width: size.width * 0.6,
+                                      child: Text(
+                                        usuario.user_name ?? "Hubo un error",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-
-                                ],
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedUser = usuario.nombre;
+                                              selected = !selected;
+                                            });
+                                            print(usuario.nombre);
+                                          },
+                                          child: Icon(
+                                            selected &&
+                                                    selectedUser ==
+                                                        usuario.nombre
+                                                ? Icons.person
+                                                : Icons.person_add_alt_1,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],

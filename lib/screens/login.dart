@@ -23,7 +23,8 @@ class Login extends StatelessWidget {
     prefs.setString('apellido', user.apellido);
     prefs.setString('user_name', user.user_name);
     prefs.setString('email', user.email);
-    prefs.setString('is_active', user.is_active);
+    prefs.setString('imagen', user.imagen);
+    prefs.setBool('is_active', user.is_active);
   }
 
 
@@ -74,6 +75,7 @@ class Login extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 25.0),
                     width: 300.0,
                     child: TextFormField(
+                      obscureText: true,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Password',
@@ -108,7 +110,6 @@ class Login extends StatelessWidget {
                           if(response != null){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
                             guardarDatosUsuario(response);
-                            print(response);
                           }
                           else{
                             showTemporarySnackBar(context, 'Error en el usuario o contraseña');

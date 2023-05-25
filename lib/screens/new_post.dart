@@ -1,5 +1,10 @@
-import "package:chirp_chat/screens/feed.dart";
-import "package:flutter/material.dart";
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewPost extends StatefulWidget {
   const NewPost({Key? key}) : super(key: key);
@@ -9,94 +14,112 @@ class NewPost extends StatefulWidget {
 }
 
 class _NewPostState extends State<NewPost> {
-  bool close = false;
+  final TextEditingController _contentController = TextEditingController();
+  File? _selectedImage;
+
+
+  Future<int> obtenerIdUsuarioCell() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int id = prefs.getInt('id') ?? 0;
+    return id;
+  }
+  Future<void> _getImageFromGallery() async {
+    final pickedImage = await ImagePicker().getImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
+  Future<void> _submitPost() async {
+    if (_contentController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('El contenido no puede estar vacío.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (_selectedImage == null) {
+      final imageBytes = await _selectedImage!.readAsBytes();
+      final base64Image = base64Encode(imageBytes);
+
+      final apiUrl = 'https://drf-api-chirp-chat.onrender.com/publicacion/';
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: {
+          'contenido': _contentController.text,
+          "my_self": await obtenerIdUsuarioCell()
+        },
+      );
+    }else{
+      final imageBytes = await _selectedImage!.readAsBytes();
+      final base64Image = base64Encode(imageBytes);
+
+      final apiUrl = 'https://drf-api-chirp-chat.onrender.com/publicacion/';
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: {
+          'contenido': _contentController.text,
+          'imagen': base64Image,
+          "my_self": await obtenerIdUsuarioCell()
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _contentController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    Size size = mediaQuery.size;
-
     return Scaffold(
-      body: Container(
-          constraints: const BoxConstraints.expand(),
-          // color: Colors.black,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/background2.png"),
-                fit: BoxFit.cover),
-          ),
-          child: Column(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  setState(
-                    () {
-                      close = true;
-                      if (close == true) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Feed()));
-                      }
-                    },
-                  );
-                },
-                child: Container(
-                    margin: const EdgeInsets.only(right: 30.0, top: 15.0),
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    )),
+      appBar: AppBar(
+        title: const Text('Nuevo Post'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: _contentController,
+              decoration: const InputDecoration(
+                labelText: 'Contenido',
               ),
-              Center(
-                  child: Column(children: <Widget>[
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Column(children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: size.width * 0.03, left: size.width * 0.05),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(60.0),
-                          child: Image.asset(
-                            'assets/images/miguel.jpg',
-                            width: size.width * 0.1,
-                            height: size.width * 0.1,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.only(top: size.width * 0.03, left: 25.0),
-                        // width: size.width * 0.4,
-                        // height: 50.0,
-                        child: const Text(
-                          'Miguel Moreno',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          fillColor: Colors.white,
-                          hoverColor: Colors.white,
-                          hintText: 'What are you thinking?',
-                        ),
-                      )),
-                ])
-              ]))
-            ],
-          )),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _getImageFromGallery,
+              child: const Text('Seleccionar imagen'),
+            ),
+            const SizedBox(height: 16.0),
+            if (_selectedImage != null)
+              Image.file(
+                _selectedImage!,
+                height: 200,
+              ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _submitPost,
+              child: const Text('Publicar'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

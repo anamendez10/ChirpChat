@@ -21,24 +21,50 @@ class usuarioService {
       throw Exception("Fallo la conexión");
     }
   }
+  Future<Usuario> getIdUser(int id) async {
+    String idUrl = urlAPI + id.toString() + "/";
+    final response = await http.get(Uri.parse(idUrl));
+    if (response.statusCode == 200) {
+      Usuario user;
+      String body = utf8.decode(response.bodyBytes);
+      final json_data = json.decode(body);
+      user = Usuario.fromMap(json_data);
+      return user;
+    } else {
+      throw Exception("Fallo la conexión");
+    }
+  }
 
   // new user
-  Future<dynamic> post(Usuario user) async{//"promesa"
+  Future<dynamic> post(Usuario user) async{
     var headers = {'Content-Type': 'application/json'};
-    var jsonBody = jsonEncode(user.toJson());//de Usuario a JSON
-    if(user.imagen == null){//si no paso imagen eliminar el item
-      Map<String, dynamic> json = jsonDecode(jsonBody);// Convertir JSON a Map
-      json.remove('imagen');// Eliminar el elemento 'email' del Map
-      jsonBody = jsonEncode(json);// Convertir Map modificado de vuelta a JSON
+    var jsonBody = jsonEncode(user.toJson());
+    if(user.imagen == null){
+      Map<String, dynamic> json = jsonDecode(jsonBody);
+      json.remove('imagen');
+      jsonBody = jsonEncode(json);
     }
     var response = await http.post(url,  headers: headers, body: jsonBody);
-    if(response.statusCode == 201){//cuando se hace un POST el backend devuelve un 201 no 200
-      print(response.body);//el backend responde con el JSON del usuario que se registro
+    if(response.statusCode == 201){
     }else{
       throw Exception('${response.statusCode}: ${response.body}');
   }
   }
+  Future<dynamic> patchIMG(String img64, int id) async{
+
+    var headers = {'Content-Type': 'application/json'};
+    String patchURL = 'https://drf-api-chirp-chat.onrender.com/usuario/' + id.toString() + "/";
+    Map<String, dynamic> data = {'imagen': img64};
+    String jsonData = json.encode(data);
+    var response = await http.patch(Uri.parse(patchURL),  headers: headers, body: jsonData);
+    print('${response.statusCode}: ${response.body}');
+    if(response.statusCode == 200){
+      print("object");
+    }else{
+      throw Exception('${response.statusCode}: ${response.body}');
+    }
+
+  }
 }
 
 //Future<dynamic> put(String api) async{}
-//Future<dynamic> patch(String api) async{}

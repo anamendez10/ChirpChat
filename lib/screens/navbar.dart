@@ -22,21 +22,26 @@ class _MainPageState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PersistentTabView(
-        backgroundColor: Colors.black,
-        context,
-        controller: _controller,
-        screens: const [
-          Feed(),
-          ChatRoom(),
-          AddFriends(),
-          Profile(),
-          Settings()
-        ],
-        items: _navBarsItems(),
-        navBarStyle: NavBarStyle.style9,
-        
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: PersistentTabView(
+          backgroundColor: Colors.black,
+          context,
+          controller: _controller,
+          screens: const [
+            Feed(),
+            ChatRoom(),
+            AddFriends(),
+            Profile(),
+            Settings()
+          ],
+          items: _navBarsItems(),
+          navBarStyle: NavBarStyle.style9,
+
+        ),
       ),
+
+
     );
   }
 

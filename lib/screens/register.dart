@@ -13,6 +13,7 @@ class Register extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confPasswordController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +99,7 @@ class Register extends StatelessWidget {
                         margin: const EdgeInsets.only(bottom: 15.0),
                         width: 300.0,
                         child: TextFormField(
+                          obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Password',
@@ -111,6 +113,7 @@ class Register extends StatelessWidget {
                         margin: const EdgeInsets.only(bottom: 25.0),
                         width: 300.0,
                         child: TextFormField(
+                          obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Confirm password',
